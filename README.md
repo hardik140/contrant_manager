@@ -1,9 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Contract Intelligence Suite
 
-## Getting Started
+A comprehensive contract management application powered by AI that provides intelligent document summarization and policy comparison capabilities.
 
-First, run the development server:
+## Features
 
+- **AI-Powered Document Summarization**: Upload contracts and get intelligent summaries using Google's Gemini AI
+- **Policy Comparison**: Compare contracts against company policies to identify compliance issues
+- **Modern Web Interface**: Built with Next.js 15 and React 19 with a responsive design
+- **File Upload Support**: Supports PDF and DOCX file formats
+- **Real-time Processing**: Fast document processing with loading states and error handling
+
+## Tech Stack
+
+### Frontend
+- **Next.js 15** with App Router
+- **React 19** with TypeScript
+- **Tailwind CSS** with custom components
+- **Shadcn/ui** component library
+- **Lucide React** for icons
+
+### Backend
+- **FastAPI** for high-performance API
+- **Google Gemini AI** for document analysis
+- **MongoDB** for data storage
+- **Python** with async/await support
+
+## Prerequisites
+
+Before running this application, make sure you have the following installed:
+
+- **Node.js** (v18 or higher)
+- **Python** (v3.8 or higher)
+- **MongoDB** (local or cloud instance)
+- **Google AI API Key** (for Gemini integration)
+
+## Installation & Setup
+
+### 1. Clone the Repository
+```bash
+git clone <repository-url>
+cd contrant_manager
+```
+
+### 2. Frontend Setup
+
+Install Node.js dependencies:
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+### 3. Backend Setup
+
+Navigate to the backend directory and install Python dependencies:
+```bash
+cd backend
+pip install -r requirements.txt
+```
+
+### 4. Environment Configuration
+
+Create a `.env` file in the backend directory with the following variables:
+```env
+GOOGLE_API_KEY=your_google_gemini_api_key
+MONGODB_URL=your_mongodb_connection_string
+```
+
+## Running the Application
+
+### Start the Backend Server
+
+From the `backend` directory:
+
+**Option 1: Using Python directly**
+```bash
+python main.py
+```
+
+**Option 2: Using Uvicorn**
+```bash
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+**Option 3: Using the start scripts**
+```bash
+# On Windows
+start.bat
+
+# On Linux/Mac
+./start.sh
+```
+
+The backend API will be available at: `http://localhost:8000`
+
+### Start the Frontend Development Server
+
+From the root directory:
 ```bash
 npm run dev
 # or
@@ -14,23 +109,79 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The frontend will be available at: `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## API Endpoints
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `GET /` - API root endpoint
+- `GET /health` - Health check endpoint
+- `POST /api/contracts/summarize` - Upload and summarize contracts
+- `POST /api/compare/policy` - Compare contracts against policies
 
-## Learn More
+## Usage
 
-To learn more about Next.js, take a look at the following resources:
+1. **Document Summarization**:
+   - Navigate to the Summarizer page
+   - Upload a PDF or DOCX contract file
+   - Get an AI-generated summary of key contract terms
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Policy Comparison**:
+   - Navigate to the Comparison page
+   - Upload both a contract file and a policy document
+   - Get detailed analysis of compliance and discrepancies
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```
+contrant_manager/
+├── src/                    # Frontend source code
+│   ├── app/               # Next.js app directory
+│   ├── components/        # Reusable UI components
+│   └── lib/              # Utility functions
+├── backend/               # Python FastAPI backend
+│   ├── routes/           # API route handlers
+│   ├── services/         # Business logic services
+│   ├── models/           # Data models
+│   └── database/         # Database configuration
+└── public/               # Static assets
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Development
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Frontend Development
+- The frontend uses Next.js with TypeScript
+- Styling is done with Tailwind CSS
+- UI components are built with Shadcn/ui
+- File uploads are handled with multipart forms
+
+### Backend Development
+- The backend uses FastAPI with async/await
+- Document processing supports PDF and DOCX formats
+- AI integration uses Google's Gemini model
+- CORS is configured for local development
+
+## Building for Production
+
+### Frontend Build
+```bash
+npm run build
+npm run start
+```
+
+### Backend Production
+```bash
+pip install -r requirements.txt
+uvicorn main:app --host 0.0.0.0 --port 8000
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.
