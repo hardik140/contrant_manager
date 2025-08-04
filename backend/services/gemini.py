@@ -9,7 +9,7 @@ load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 # Default model
-DEFAULT_MODEL = "models/gemini-1.5-flash-latest"  # You can also use "models/gemini-pro"
+DEFAULT_MODEL = "models/gemini-2.0-flash"  # You can also use "models/gemini-pro"
 
 # Create model instance
 model = genai.GenerativeModel(DEFAULT_MODEL)
@@ -18,7 +18,12 @@ def summarize_contract(text: str) -> str:
     """
     Summarize the entire contract text using Gemini generate_content.
     """
-    prompt = f"Please summarize the following contract in clear bullet points:\n\n{text}"
+    prompt = (
+        "You are a legal assistant AI. Summarize the following contract in no more than 10 bullet points. "
+        "Each point should be short, clear, and avoid legal jargon. Do not include any introductory or concluding text. "
+        "Only output bullet points with no extra explanation.\n\n"
+        f"{text}"
+    )
     try:
         response = model.generate_content(prompt)
         return response.text

@@ -45,19 +45,20 @@ export default function SummarizerPage() {
       const formData = new FormData()
       formData.append("file", file)
 
-      const response = await fetch("/api/summarize", {
+      const response = await fetch("http://localhost:8000/api/upload-contract/", {
         method: "POST",
         body: formData,
       })
 
       if (!response.ok) {
-        throw new Error("Failed to process document")
+        const errorData = await response.json()
+        throw new Error(errorData.detail || "Failed to process document")
       }
 
       const data = await response.json()
       setSummary(data.summary)
     } catch (err) {
-      setError("Failed to process document. Please try again.")
+      setError(err instanceof Error ? err.message : "Failed to process document. Please try again.")
     } finally {
       setIsProcessing(false)
     }

@@ -52,19 +52,20 @@ export default function ComparisonPage() {
       formData.append("contract", contractFile)
       formData.append("policy", policyFile)
 
-      const response = await fetch("/api/compare", {
+      const response = await fetch("http://localhost:8000/api/compare/", {
         method: "POST",
         body: formData,
       })
 
       if (!response.ok) {
-        throw new Error("Failed to process documents")
+        const errorData = await response.json()
+        throw new Error(errorData.detail || "Failed to process documents")
       }
 
       const data = await response.json()
       setComparison(data.comparison)
     } catch (err) {
-      setError("Failed to process documents. Please try again.")
+      setError(err instanceof Error ? err.message : "Failed to process documents. Please try again.")
     } finally {
       setIsProcessing(false)
     }
