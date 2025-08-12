@@ -9,6 +9,37 @@ A comprehensive contract management application powered by AI that provides inte
 - **Modern Web Interface**: Built with Next.js 15 and React 19 with a responsive design
 - **File Upload Support**: Supports PDF and DOCX file formats
 - **Real-time Processing**: Fast document processing with loading states and error handling
+- **Optimized OCR Processing**: High-performance text extraction from scanned documents
+
+## Advanced OCR System
+
+The application features a highly optimized OCR (Optical Character Recognition) system designed for processing large documents efficiently:
+
+### Performance Optimizations
+
+- **Intelligent Preprocessing**
+  - Auto-detection of image quality metrics
+  - Skip unnecessary preprocessing for clean pages
+  - Dynamic contrast and noise analysis
+  - Smart margin removal
+
+- **Parallel Processing**
+  - Multi-core PDF page processing
+  - Parallel image conversion and OCR
+  - Efficient memory management with 200 DPI processing
+  - Preserved page ordering for accurate results
+
+- **Smart OCR Configuration**
+  - Dynamic PSM (Page Segmentation Mode) selection
+  - Automatic layout analysis
+  - Optimized for both single and multi-column documents
+  - Cross-platform compatibility (Windows, Mac, Linux)
+
+### Performance Metrics
+- Processing time for a 54-page scanned PDF: ~40 seconds
+- Supports both text-based and scanned documents
+- Automatic OCR activation only when needed
+- Memory-efficient parallel processing
 
 ## Tech Stack
 
@@ -24,6 +55,10 @@ A comprehensive contract management application powered by AI that provides inte
 - **Google Gemini AI** for document analysis
 - **MongoDB** for data storage
 - **Python** with async/await support
+- **Advanced OCR System** with multi-core processing
+  - Tesseract OCR with optimized preprocessing
+  - Parallel PDF processing
+  - Smart image analysis
 
 ## Prerequisites
 
@@ -33,6 +68,8 @@ Before running this application, make sure you have the following installed:
 - **Python** (v3.8 or higher)
 - **MongoDB** (local or cloud instance)
 - **Google AI API Key** (for Gemini integration)
+- **Tesseract OCR** (v5.0 or higher)
+- **Poppler** (for PDF processing)
 
 ## Installation & Setup
 
