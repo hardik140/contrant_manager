@@ -1,12 +1,14 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
-from services.file_utils import extract_text
+from services.file_utils import extract_text, extract_text_legacy
 from services.gemini import summarize_contract
 from database.db import db
 from bson import ObjectId
 import tempfile
 import os
+import logging
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 @router.post("/upload-contract/")
 async def upload_contract(file: UploadFile = File(...)):
@@ -23,26 +25,42 @@ async def upload_contract(file: UploadFile = File(...)):
         file_path = tmp.name
 
     try:
-        # Extract text from the file
-        content = extract_text(file_path)
+        # Extract text from the file with metadata
+        try:
+            content, extraction_metadata = extract_text(file_path)
+        except Exception as e:
+            # Fallback to legacy extraction
+            logger.warning(f"Enhanced extraction failed, falling back: {str(e)}")
+            content = extract_text_legacy(file_path)
+            extraction_metadata = {"extraction_method": "legacy_fallback", "ocr_used": False}
         
         if not content.strip():
             raise HTTPException(status_code=400, detail="Could not extract text from the file")
         
+        logger.info(f"Successfully extracted {len(content)} characters using {extraction_metadata.get('extraction_method', 'unknown')}")
+        
         # Generate summary using Gemini
         summary = summarize_contract(content)
 
-        # Store in database
+        # Store in database with extraction metadata
         doc_id = db['contracts'].insert_one({
             "filename": file.filename,
             "content": content,
             "summary": summary,
-            "type": "contract"
+            "type": "contract",
+            "extraction_metadata": extraction_metadata,
+            "created_at": {"$currentDate": {"$type": "timestamp"}}
         }).inserted_id
 
-        return {"id": str(doc_id), "summary": summary, "filename": file.filename}
+        return {
+            "id": str(doc_id), 
+            "summary": summary, 
+            "filename": file.filename,
+            "extraction_metadata": extraction_metadata
+        }
     
     except Exception as e:
+        logger.error(f"Error processing file {file.filename}: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error processing file: {str(e)}")
     
     finally:

@@ -7,3 +7,12 @@ python-dotenv
 google-generativeai
 docx2txt
 PyMuPDF
+pytesseract
+pdf2image
+python-docx
+pdfplumber
+pillow
+numpy
+sentence-transformers
+scikit-learn
+torch

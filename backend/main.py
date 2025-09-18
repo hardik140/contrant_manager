@@ -1,21 +1,125 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from routes import contract, compare
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import JSONResponse
+from pathlib import Path
+import os
+import logging
+import signal
+import sys
 
-app = FastAPI(title="Contract Manager API", version="1.0.0")
+# Setup project paths
+try:
+    import path_config  # This will auto-setup paths
+except ImportError:
+    # Fallback path setup if path_config is not available
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    if current_dir not in sys.path:
+        sys.path.append(current_dir)
+
+from routes import contract, compare, policy, clause
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+# Global shutdown handler
+def signal_handler(sig, frame):
+    logger.info('Received shutdown signal, gracefully shutting down...')
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGTERM, signal_handler)
+
+app = FastAPI(
+    title="Contract Manager API",
+    version="2.0.0",
+    description="Enhanced API for contract analysis and comparison with clause detection"
+)
+
+@app.on_event("startup")
+async def startup_event():
+    logger.info("Starting Contract Manager API v2.0.0...")
+    
+    # Initialize services
+    try:
+        # Check if embedding model can be loaded
+        from services.clause_analyzer import embedding_model
+        if embedding_model is not None:
+            logger.info("✅ Sentence transformer model loaded successfully")
+        else:
+            logger.warning("⚠️ Sentence transformer model not available, using rule-based fallback")
+    except Exception as e:
+        logger.warning(f"⚠️ Error checking embedding model: {str(e)}")
+    
+    # Check database connection
+    try:
+        from database.db import client
+        # Ping the database
+        client.admin.command('ping')
+        logger.info("✅ Database connection established")
+    except Exception as e:
+        logger.warning(f"⚠️ Database connection failed: {str(e)} - running without persistence")
+    
+    # Initialize deterministic policy processing
+    try:
+        logger.info("🚀 Initializing deterministic policy processor...")
+        from services.policy_startup_service import get_startup_service
+        
+        startup_service = get_startup_service()
+        processed_policies = await startup_service.initialize_policies()
+        
+        if processed_policies:
+            logger.info(f"✅ Policy preprocessing complete: {len(processed_policies)} policies ready")
+            for policy_id, metadata in processed_policies.items():
+                logger.info(f"   📋 {policy_id}: {metadata.normalized_length} chars, type: {metadata.policy_type}")
+        else:
+            logger.warning("⚠️ No policies were successfully processed - comparison functionality may be limited")
+            
+    except Exception as e:
+        logger.error(f"❌ Policy processor initialization failed: {str(e)}")
+        logger.warning("⚠️ Comparison functionality may be limited without policy preprocessing")
+    
+    logger.info("🚀 Contract Manager API started successfully")
+
+# Error handling
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": str(exc.detail)},
+    )
 
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Frontend URLs
+    allow_origins=[
+        "http://localhost:3000",  # Next.js development server
+        "http://127.0.0.1:3000",
+    ],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
+    expose_headers=["*"]
 )
+
+# Mount static files
+static_path = Path(__file__).parent / "static"
+policies_path = Path(__file__).parent / "policies"
+static_path.mkdir(exist_ok=True)
+policies_path.mkdir(exist_ok=True)
+
+app.mount("/static", StaticFiles(directory=str(static_path)), name="static")
+app.mount("/policies", StaticFiles(directory=str(policies_path)), name="policies")
 
 # Include routers
 app.include_router(contract.router, prefix="/api", tags=["contracts"])
 app.include_router(compare.router, prefix="/api", tags=["comparisons"])
+app.include_router(policy.router, prefix="/api", tags=["policies"])
+app.include_router(clause.router, prefix="/api", tags=["clauses"])
 
 @app.get("/")
 async def root():
@@ -23,8 +127,24 @@ async def root():
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy"}
+    return {
+        "status": "healthy",
+        "version": "2.0.0",
+        "features": [
+            "text_normalization",
+            "llm_circuit_breaker", 
+            "enhanced_provenance",
+            "structured_logging"
+        ]
+    }
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    try:
+        logger.info("Starting server on http://127.0.0.1:8000")
+        uvicorn.run(app, host="127.0.0.1", port=8000, log_level="info")
+    except KeyboardInterrupt:
+        logger.info("Server shutdown requested by user")
+    except Exception as e:
+        logger.error(f"Server failed to start: {str(e)}")
+        sys.exit(1)

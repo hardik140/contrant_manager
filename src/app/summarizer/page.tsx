@@ -16,6 +16,8 @@ export default function SummarizerPage() {
   const [summary, setSummary] = useState("")
   const [error, setError] = useState("")
 
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0]
     if (selectedFile) {
@@ -45,7 +47,7 @@ export default function SummarizerPage() {
       const formData = new FormData()
       formData.append("file", file)
 
-      const response = await fetch("http://localhost:8000/api/upload-contract/", {
+      const response = await fetch(`${BACKEND_URL}/api/upload-contract`, {
         method: "POST",
         body: formData,
       })
@@ -56,7 +58,7 @@ export default function SummarizerPage() {
       }
 
       const data = await response.json()
-      setSummary(data.summary)
+      setSummary(data.summary || JSON.stringify(data))
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to process document. Please try again.")
     } finally {
