@@ -39,3 +39,57 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# Backend specific
+backend/__pycache__/
+backend/**/__pycache__/
+backend/venv/
+backend/.env
+backend/test_*.py
+backend/temp/
+backend/logs/
+
+# Data files
+*.pdf
+*.docx
+*.doc
+backend/policies/*.pdf
+backend/index/
+backend/static/uploads/
+backend/legal_analysis_report.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
