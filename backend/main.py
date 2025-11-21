@@ -40,6 +40,21 @@ app = FastAPI(
     description="Enhanced API for contract analysis and comparison with clause detection"
 )
 
+# Configure CORS - Must be done early before routes
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",  # Next.js development server
+        "http://127.0.0.1:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3001",
+    ],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["*"],
+    expose_headers=["*"]
+)
+
 @app.on_event("startup")
 async def startup_event():
     logger.info("Starting Contract Manager API v2.0.0...")
@@ -92,19 +107,6 @@ async def http_exception_handler(request, exc):
         status_code=exc.status_code,
         content={"detail": str(exc.detail)},
     )
-
-# Configure CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",  # Next.js development server
-        "http://127.0.0.1:3000",
-    ],
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["*"],
-    expose_headers=["*"]
-)
 
 # Mount static files
 static_path = Path(__file__).parent / "static"

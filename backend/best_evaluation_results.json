@@ -1,0 +1,483 @@
+{
+  "test_cases_count": 20,
+  "top_k": 10,
+  "threshold": 0.6,
+  "macro_averaged": {
+    "precision": 0.26833333333333337,
+    "recall": 0.37916666666666665,
+    "f1_score": 0.2532875457875458,
+    "accuracy": 0.09000000000000001
+  },
+  "micro_averaged": {
+    "precision": 0.32142857142857145,
+    "recall": 0.3333333333333333,
+    "f1_score": 0.32727272727272727,
+    "total_true_positives": 18,
+    "total_false_positives": 38,
+    "total_false_negatives": 36
+  },
+  "individual_results": [
+    {
+      "query": "agreements void for uncertainty",
+      "retrieved_count": 9,
+      "relevant_count": 1,
+      "true_positives": 1,
+      "false_positives": 6,
+      "false_negatives": 0,
+      "precision": 0.1111111111111111,
+      "recall": 1.0,
+      "f1_score": 0.19999999999999998,
+      "accuracy": 0.1,
+      "retrieved_ids": [
+        "Section_29",
+        "Section_29",
+        "Section_36",
+        "Clause_(e)",
+        "Section_36",
+        "Clause_(i)",
+        "Section_56",
+        "Clause_(g)",
+        "Clause_(d)"
+      ],
+      "relevant_ids": [
+        "Section_29"
+      ],
+      "description": "Section 29 - Uncertainty in agreements"
+    },
+    {
+      "query": "contract without consideration is void",
+      "retrieved_count": 2,
+      "relevant_count": 1,
+      "true_positives": 0,
+      "false_positives": 2,
+      "false_negatives": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1_score": 0,
+      "accuracy": 0.0,
+      "retrieved_ids": [
+        "Clause_(a)",
+        "Clause_(i)"
+      ],
+      "relevant_ids": [
+        "Section_25"
+      ],
+      "description": "Section 25 - Agreement without consideration"
+    },
+    {
+      "query": "fraud misrepresentation in contract",
+      "retrieved_count": 5,
+      "relevant_count": 3,
+      "true_positives": 1,
+      "false_positives": 4,
+      "false_negatives": 2,
+      "precision": 0.2,
+      "recall": 0.3333333333333333,
+      "f1_score": 0.25,
+      "accuracy": 0.1,
+      "retrieved_ids": [
+        "Explanation_684",
+        "Section_17",
+        "Section_238",
+        "Explanation_647",
+        "Clause_(a)"
+      ],
+      "relevant_ids": [
+        "Section_17",
+        "Section_18",
+        "Section_19"
+      ],
+      "description": "Fraud and misrepresentation"
+    },
+    {
+      "query": "coercion undue influence",
+      "retrieved_count": 5,
+      "relevant_count": 2,
+      "true_positives": 2,
+      "false_positives": 2,
+      "false_negatives": 0,
+      "precision": 0.4,
+      "recall": 1.0,
+      "f1_score": 0.5714285714285715,
+      "accuracy": 0.2,
+      "retrieved_ids": [
+        "Illustration_608",
+        "Section_15",
+        "Section_15",
+        "Section_16",
+        "Section_1"
+      ],
+      "relevant_ids": [
+        "Section_15",
+        "Section_16"
+      ],
+      "description": "Coercion and undue influence"
+    },
+    {
+      "query": "breach of contract damages compensation",
+      "retrieved_count": 8,
+      "relevant_count": 2,
+      "true_positives": 2,
+      "false_positives": 3,
+      "false_negatives": 0,
+      "precision": 0.25,
+      "recall": 1.0,
+      "f1_score": 0.4,
+      "accuracy": 0.2,
+      "retrieved_ids": [
+        "Section_74",
+        "Section_73",
+        "Section_74",
+        "Preamble",
+        "Preamble",
+        "Section_73",
+        "Clause_(d)",
+        "Clause_(a)"
+      ],
+      "relevant_ids": [
+        "Section_73",
+        "Section_74"
+      ],
+      "description": "Breach of contract remedies"
+    },
+    {
+      "query": "agent authority and liability",
+      "retrieved_count": 10,
+      "relevant_count": 3,
+      "true_positives": 1,
+      "false_positives": 6,
+      "false_negatives": 2,
+      "precision": 0.1,
+      "recall": 0.3333333333333333,
+      "f1_score": 0.15384615384615383,
+      "accuracy": 0.1,
+      "retrieved_ids": [
+        "Section_193",
+        "Section_233",
+        "Section_186",
+        "Section_193",
+        "Preamble",
+        "Preamble",
+        "Section_226",
+        "Illustration_2364",
+        "Section_233",
+        "Section_195"
+      ],
+      "relevant_ids": [
+        "Section_182",
+        "Section_186",
+        "Section_188"
+      ],
+      "description": "Agency law"
+    },
+    {
+      "query": "voidable contract free consent",
+      "retrieved_count": 3,
+      "relevant_count": 3,
+      "true_positives": 1,
+      "false_positives": 1,
+      "false_negatives": 2,
+      "precision": 0.3333333333333333,
+      "recall": 0.3333333333333333,
+      "f1_score": 0.3333333333333333,
+      "accuracy": 0.1,
+      "retrieved_ids": [
+        "Section_19",
+        "Section_19",
+        "Clause_(i)"
+      ],
+      "relevant_ids": [
+        "Section_13",
+        "Section_14",
+        "Section_19"
+      ],
+      "description": "Voidable contracts"
+    },
+    {
+      "query": "guarantee surety liability",
+      "retrieved_count": 4,
+      "relevant_count": 3,
+      "true_positives": 2,
+      "false_positives": 1,
+      "false_negatives": 1,
+      "precision": 0.5,
+      "recall": 0.6666666666666666,
+      "f1_score": 0.5714285714285715,
+      "accuracy": 0.2,
+      "retrieved_ids": [
+        "Section_128",
+        "Section_128",
+        "Section_126",
+        "Preamble"
+      ],
+      "relevant_ids": [
+        "Section_126",
+        "Section_128",
+        "Section_133"
+      ],
+      "description": "Guarantee and surety"
+    },
+    {
+      "query": "bailment bailee responsibilities duties",
+      "retrieved_count": 9,
+      "relevant_count": 3,
+      "true_positives": 2,
+      "false_positives": 4,
+      "false_negatives": 1,
+      "precision": 0.2222222222222222,
+      "recall": 0.6666666666666666,
+      "f1_score": 0.3333333333333333,
+      "accuracy": 0.2,
+      "retrieved_ids": [
+        "Section_164",
+        "Section_164",
+        "Section_148",
+        "Section_1151",
+        "Section_152",
+        "Section_1161",
+        "Section_152",
+        "Preamble",
+        "Preamble"
+      ],
+      "relevant_ids": [
+        "Section_148",
+        "Section_151",
+        "Section_152"
+      ],
+      "description": "Bailment law"
+    },
+    {
+      "query": "contract performance obligation",
+      "retrieved_count": 4,
+      "relevant_count": 3,
+      "true_positives": 1,
+      "false_positives": 2,
+      "false_negatives": 2,
+      "precision": 0.25,
+      "recall": 0.3333333333333333,
+      "f1_score": 0.28571428571428575,
+      "accuracy": 0.1,
+      "retrieved_ids": [
+        "Preamble",
+        "Preamble",
+        "Section_37",
+        "Section_38"
+      ],
+      "relevant_ids": [
+        "Section_37",
+        "Section_40",
+        "Section_51"
+      ],
+      "description": "Contract performance"
+    },
+    {
+      "query": "illegal unlawful consideration void",
+      "retrieved_count": 3,
+      "relevant_count": 2,
+      "true_positives": 0,
+      "false_positives": 3,
+      "false_negatives": 2,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1_score": 0,
+      "accuracy": 0.0,
+      "retrieved_ids": [
+        "Section_4",
+        "Clause_(f)",
+        "Illustration_807"
+      ],
+      "relevant_ids": [
+        "Section_23",
+        "Section_24"
+      ],
+      "description": "Unlawful consideration"
+    },
+    {
+      "query": "contingent contract uncertain event",
+      "retrieved_count": 0,
+      "relevant_count": 3,
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 3,
+      "precision": 0,
+      "recall": 0.0,
+      "f1_score": 0,
+      "accuracy": 0.0,
+      "retrieved_ids": [],
+      "relevant_ids": [
+        "Section_31",
+        "Section_32",
+        "Section_33"
+      ],
+      "description": "Contingent contracts"
+    },
+    {
+      "query": "offer acceptance proposal communication",
+      "retrieved_count": 0,
+      "relevant_count": 4,
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 4,
+      "precision": 0,
+      "recall": 0.0,
+      "f1_score": 0,
+      "accuracy": 0.0,
+      "retrieved_ids": [],
+      "relevant_ids": [
+        "Section_2(a)",
+        "Section_2(b)",
+        "Section_3",
+        "Section_4"
+      ],
+      "description": "Offer and acceptance"
+    },
+    {
+      "query": "mistake contract void agreement",
+      "retrieved_count": 1,
+      "relevant_count": 3,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 2,
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "f1_score": 0.5,
+      "accuracy": 0.1,
+      "retrieved_ids": [
+        "Section_22"
+      ],
+      "relevant_ids": [
+        "Section_20",
+        "Section_21",
+        "Section_22"
+      ],
+      "description": "Mistake in contracts"
+    },
+    {
+      "query": "indemnity indemnifier loss promise",
+      "retrieved_count": 4,
+      "relevant_count": 2,
+      "true_positives": 2,
+      "false_positives": 2,
+      "false_negatives": 0,
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1_score": 0.6666666666666666,
+      "accuracy": 0.2,
+      "retrieved_ids": [
+        "Section_125",
+        "Preamble",
+        "Section_124",
+        "Section_145"
+      ],
+      "relevant_ids": [
+        "Section_124",
+        "Section_125"
+      ],
+      "description": "Indemnity contracts"
+    },
+    {
+      "query": "capacity to contract minor competent",
+      "retrieved_count": 0,
+      "relevant_count": 2,
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 2,
+      "precision": 0,
+      "recall": 0.0,
+      "f1_score": 0,
+      "accuracy": 0.0,
+      "retrieved_ids": [],
+      "relevant_ids": [
+        "Section_11",
+        "Section_12"
+      ],
+      "description": "Capacity to contract"
+    },
+    {
+      "query": "communication acceptance revocation",
+      "retrieved_count": 1,
+      "relevant_count": 4,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 3,
+      "precision": 1.0,
+      "recall": 0.25,
+      "f1_score": 0.4,
+      "accuracy": 0.1,
+      "retrieved_ids": [
+        "Section_5"
+      ],
+      "relevant_ids": [
+        "Section_5",
+        "Section_6",
+        "Section_7",
+        "Section_8"
+      ],
+      "description": "Communication rules"
+    },
+    {
+      "query": "quasi contract obligation law",
+      "retrieved_count": 2,
+      "relevant_count": 3,
+      "true_positives": 0,
+      "false_positives": 2,
+      "false_negatives": 3,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1_score": 0,
+      "accuracy": 0.0,
+      "retrieved_ids": [
+        "Section_65",
+        "Section_37"
+      ],
+      "relevant_ids": [
+        "Section_68",
+        "Section_69",
+        "Section_70"
+      ],
+      "description": "Quasi-contracts"
+    },
+    {
+      "query": "time place performance contract",
+      "retrieved_count": 0,
+      "relevant_count": 4,
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 4,
+      "precision": 0,
+      "recall": 0.0,
+      "f1_score": 0,
+      "accuracy": 0.0,
+      "retrieved_ids": [],
+      "relevant_ids": [
+        "Section_46",
+        "Section_47",
+        "Section_48",
+        "Section_49"
+      ],
+      "description": "Time and place of performance"
+    },
+    {
+      "query": "novation rescission alteration",
+      "retrieved_count": 2,
+      "relevant_count": 3,
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 2,
+      "precision": 0.5,
+      "recall": 0.3333333333333333,
+      "f1_score": 0.4,
+      "accuracy": 0.1,
+      "retrieved_ids": [
+        "Section_62",
+        "Section_62"
+      ],
+      "relevant_ids": [
+        "Section_62",
+        "Section_63",
+        "Section_64"
+      ],
+      "description": "Novation and alteration"
+    }
+  ]
+}

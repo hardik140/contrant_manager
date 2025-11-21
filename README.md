@@ -1,11 +1,12 @@
 # Contract Intelligence Suite
 
-A comprehensive contract management application powered by AI that provides intelligent document summarization and policy comparison capabilities.
+A comprehensive contract management application powered by AI that provides intelligent document summarization, policy comparison, and RAG-enhanced clause detection capabilities.
 
 ## Features
 
 - **AI-Powered Document Summarization**: Upload contracts and get intelligent summaries using Google's Gemini AI
-- **Policy Comparison**: Compare contracts against company policies to identify compliance issues
+- **RAG-Enhanced Clause Detection**: Advanced clause identification powered by Retrieval-Augmented Generation (RAG) with FAISS vector search over 948 legal provisions from the Indian Contract Act
+- **Policy Comparison**: Compare contracts against company policies to identify compliance issues using semantic similarity and vector embeddings
 - **Modern Web Interface**: Built with Next.js 15 and React 19 with a responsive design
 - **File Upload Support**: Supports PDF and DOCX file formats
 - **Real-time Processing**: Fast document processing with loading states and error handling
@@ -22,6 +23,9 @@ A comprehensive contract management application powered by AI that provides inte
 ### Backend
 - **FastAPI** for high-performance API
 - **Google Gemini AI** for document analysis
+- **RAG (Retrieval-Augmented Generation)** for intelligent clause detection
+- **FAISS Vector Database** for semantic search across 948 legal provisions
+- **Sentence Transformers** (all-mpnet-base-v2) for high-quality embeddings
 - **MongoDB** for data storage
 - **Python** with async/await support
 
@@ -69,6 +73,16 @@ GOOGLE_API_KEY=your_google_gemini_api_key
 MONGODB_URL=your_mongodb_connection_string
 ```
 
+### 5. Build FAISS Legal Index (One-Time Setup)
+
+Initialize the RAG vector database with legal provisions:
+```bash
+cd backend
+python build_legal_index.py
+```
+
+This builds a FAISS index with 948 legal provisions from the Indian Contract Act, enabling semantic search for clause detection. The index files are stored in `backend/index/`.
+
 ## Running the Application
 
 ### Start the Backend Server
@@ -84,6 +98,8 @@ python main.py
 ```bash
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
+
+**Note:** On startup, the backend automatically preprocesses all policies and initializes the RAG pipeline for optimal performance.
 
 **Option 3: Using the start scripts**
 ```bash
@@ -116,7 +132,9 @@ The frontend will be available at: `http://localhost:3000`
 - `GET /` - API root endpoint
 - `GET /health` - Health check endpoint
 - `POST /api/contracts/summarize` - Upload and summarize contracts
-- `POST /api/compare/policy` - Compare contracts against policies
+- `POST /api/compare/policy` - Compare contracts against policies using RAG
+- `POST /api/clauses/detect` - Detect and analyze clauses using RAG-powered semantic search
+- `GET /api/policies/` - Retrieve available policies
 
 ## Usage
 
@@ -128,7 +146,13 @@ The frontend will be available at: `http://localhost:3000`
 2. **Policy Comparison**:
    - Navigate to the Comparison page
    - Upload both a contract file and a policy document
-   - Get detailed analysis of compliance and discrepancies
+   - Get detailed analysis of compliance and discrepancies powered by RAG
+
+3. **RAG-Based Clause Detection**:
+   - The system automatically detects clauses using semantic search
+   - Each clause is matched against 948 legal provisions via FAISS vector similarity
+   - Relevant legal context is retrieved and augmented with LLM analysis
+   - Provides compliance status, risk assessment, and actionable recommendations
 
 ## Project Structure
 
@@ -140,9 +164,14 @@ contrant_manager/
 │   └── lib/              # Utility functions
 ├── backend/               # Python FastAPI backend
 │   ├── routes/           # API route handlers
-│   ├── services/         # Business logic services
+│   ├── services/         # Business logic services (RAG, clause analysis)
 │   ├── models/           # Data models
-│   └── database/         # Database configuration
+│   ├── database/         # Database configuration
+│   ├── index/            # FAISS vector database (948 legal provisions)
+│   │   ├── faiss.index   # Vector similarity index
+│   │   ├── ids.npy       # Clause identifiers
+│   │   └── act_clauses.jsonl  # Legal provision metadata
+│   └── policies/         # Policy documents for comparison
 └── public/               # Static assets
 ```
 
@@ -157,7 +186,10 @@ contrant_manager/
 ### Backend Development
 - The backend uses FastAPI with async/await
 - Document processing supports PDF and DOCX formats
-- AI integration uses Google's Gemini model
+- AI integration uses Google's Gemini model with deterministic configuration
+- RAG pipeline uses Sentence Transformers (all-mpnet-base-v2) for embeddings
+- FAISS IndexFlatIP provides fast semantic similarity search
+- Clause detection combines vector retrieval with LLM analysis
 - CORS is configured for local development
 
 ## Building for Production
@@ -171,8 +203,23 @@ npm run start
 ### Backend Production
 ```bash
 pip install -r requirements.txt
+python build_legal_index.py  # Ensure FAISS index is built
 uvicorn main:app --host 0.0.0.0 --port 8000
 ```
+
+## How RAG Powers Clause Detection
+
+The system uses Retrieval-Augmented Generation (RAG) to provide intelligent clause analysis:
+
+1. **Embedding Generation**: Contract clauses are converted to 768-dimensional vectors using Sentence Transformers
+2. **Semantic Search**: FAISS IndexFlatIP searches 948 legal provisions for the most relevant matches
+3. **Context Retrieval**: Top-K similar provisions are retrieved with similarity scores
+4. **LLM Augmentation**: Retrieved legal context is combined with the clause and sent to Gemini
+5. **Analysis**: The LLM analyzes compliance, risks, and recommendations using the augmented context
+6. **Deterministic Output**: Temperature=0 ensures consistent results for identical queries
+7. **Caching**: Hash-based caching provides instant responses for repeated queries
+
+This RAG approach combines the precision of semantic search with the reasoning capabilities of LLMs, resulting in accurate and context-aware legal analysis.
 
 ## Contributing
 
